@@ -5,7 +5,7 @@ load_dotenv()
 
 class Settings:
 
-    APP_NAME: str = os.getenv("APP_NAME", "My FastAPI Project")
+    APP_NAME: str = os.getenv("APP_NAME", "User Service")
     APP_VERSION: str = os.getenv("APP_VERSION", "1.0.0")    
     DEBUG: bool = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
     API_V1_STR: str = os.getenv("API_V1_STR", "/api/v1")

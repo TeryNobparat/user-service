@@ -14,4 +14,5 @@ class User(Base):
     fast_tel = Column(String, unique=True, nullable=False)
     email = Column(String, unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
+    is_active = Column(String, default=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)

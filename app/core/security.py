@@ -1,4 +1,4 @@
-from datatime import datatime, timedelta
+from datetime import datetime, timedelta
 from jose import JWTError,jwt
 from passlib.context import CryptContext
 from fastapi import Depends,HTTPException,status
@@ -44,7 +44,7 @@ def decode_access_token(token: str) -> Dict[str, Any]:
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication expired credentials")
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
+def get_current_user(token: str = Depends(oauth2_schema), db: Session = Depends(get_db)) -> User:
     username = decode_access_token(token).get("sub")
     user = db.query(User).filter(User.username == username).first()
 

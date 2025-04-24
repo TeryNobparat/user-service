@@ -19,4 +19,4 @@ class PageRead(PageBase):
     children: Optional[List["PageRead"]] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
