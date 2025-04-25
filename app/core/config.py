@@ -13,6 +13,6 @@ class Settings:
     DATABASE_URL: str = os.getenv("DATABASE_URL", "mssql+pyodbc://sa:sqladmin@srt02fa018/FA_Waste?driver=ODBC+Driver+17+for+SQL+Server")
     SECRET_KEY: str = os.getenv("SECRET_KEY", "supersecretkey")
     ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30)
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
 
 settings = Settings()
