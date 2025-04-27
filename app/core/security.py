@@ -25,7 +25,7 @@ def verify_password(plain_password: str, hashed_password : str) -> bool:
     return pwd_context.verify(plain_password,hashed_password)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
-    to_encode = dict(data)  # ปลอดภัยกว่า .copy()
+    to_encode = dict(data)
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -41,8 +41,9 @@ def decode_access_token(token: str) -> Dict[str, Any]:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication expired credentials")
 
 def get_current_user(token: str = Depends(oauth2_schema), db: Session = Depends(get_db)) -> User:
-    username = decode_access_token(token).get("sub")
-    user = db.query(User).filter(User.username == username).first()
+    userID = decode_access_token(token).get("sub")
+    print(f"Decoded username: {userID}")
+    user = db.query(User).filter(User.id == userID).first()
 
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from uuid import UUID
 
@@ -19,3 +19,5 @@ def api_change_password(user_id: UUID, password_data: UserChangePassword, db: Se
 @router.post("/{user_id}/edit-detail", response_model=UserRead, status_code=200)
 def api_edit_user(user_id: UUID, userupdate: UserUpdate, db: Session = Depends(get_db)):
     return crud_edit_user(user_id,userupdate,db)
+
+

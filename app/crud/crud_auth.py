@@ -18,15 +18,10 @@ def crud_signin(user_data: UserSignin, db: Session):
     if not verify_password(user_data.password, user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
 
-    token = create_access_token(data={"sub": str(user.id)})  
+    token = create_access_token(data={"sub": str(user.id)})
     return {
         "access_token": token,
         "token_type": "bearer",
-        "user_id": str(user.id),
-        "username": user.username
+        "username": user.username,
+        "name": user.full_name
     }
-
-def get_current_user(token: str = Depends(oauth2_schema)):
-    payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-    print(payload)
-    return payload

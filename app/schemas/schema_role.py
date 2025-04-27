@@ -12,3 +12,17 @@ class RoleRead(RoleBase):
 
     class Config:
         from_attributes = True
+
+
+class RoleUser(BaseModel):
+    user_id : UUID
+    role_id : UUID
+
+class RoleUserCreate(RoleUser):
+    pass
+
+class RoleUserRead(RoleUser):
+    id: UUID
+
+    class Config:
+        from_attributes = True
