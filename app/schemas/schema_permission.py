@@ -12,3 +12,18 @@ class PermissionRead(PermissionBase):
 
     class Config:
         from_attributes = True
+
+
+     
+class RolePermission(BaseModel):
+    permission_id : UUID
+    role_id : UUID
+
+class RoleRolePermissionCreate(RolePermission):
+    pass
+
+class RoleRolePermissionRead(RolePermission):
+    id: UUID
+
+    class Config:
+        from_attributes = True   

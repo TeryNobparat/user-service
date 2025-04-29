@@ -53,3 +53,6 @@ def crud_add_roles(data: RoleUserCreate, db: Session):
 
     return RoleUserRead.from_orm(new_assignment)
 
+
+
+

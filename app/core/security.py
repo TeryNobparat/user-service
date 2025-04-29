@@ -5,6 +5,10 @@ from fastapi import Depends,HTTPException,status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from app.models.user import User
+from app.models.user_role import UserRole
+from app.models.role_permission import RolePermission
+from app.models.permission import Permission
+from app.models.role import Role
 from app.core.database import get_db
 from app.core.config import settings
 from typing import Optional,List,Dict,Any
@@ -41,11 +45,28 @@ def decode_access_token(token: str) -> Dict[str, Any]:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication expired credentials")
 
 def get_current_user(token: str = Depends(oauth2_schema), db: Session = Depends(get_db)) -> User:
-    userID = decode_access_token(token).get("sub")
-    print(f"Decoded username: {userID}")
-    user = db.query(User).filter(User.id == userID).first()
-
+    user_id = decode_access_token(token).get("sub")
+    user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
 
-    return user
+    user_roles = db.query(UserRole).filter(UserRole.user_id == user_id).all()
+
+    role_ids = [ur.role.id for ur in user_roles]
+    roles = db.query(Role).filter(Role.id.in_(role_ids)).all()
+    role_names = [role.name for role in roles]
+
+    role_permissions = db.query(RolePermission).filter(RolePermission.role_id.in_(role_ids)).all()
+
+    permissions_ids = [rp.permission_id for rp in role_permissions]
+    permissions = db.query(Permission).filter(Permission.id.in_(permissions_ids)).all()
+    permission_names = [permission.name for permission in permissions]
+
+    return {
+        "user_id": str(user.id),
+        "username": user.username,
+        "roles": role_names,
+        "permissions": permission_names
+    }
+
+    
