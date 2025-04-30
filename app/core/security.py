@@ -79,4 +79,4 @@ def require_any_permission(*perms):
         return user
     return cheker
 
-    
+
