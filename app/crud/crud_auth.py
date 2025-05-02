@@ -6,6 +6,8 @@ from app.core.security import create_access_token, verify_password
 from app.models.user import User
 from app.schemas.schema_user import UserSignin
 from app.core.config import settings
+from app.models.user_role import UserRole
+from app.models.role import Role
 
 
 oauth2_schema = OAuth2PasswordBearer(tokenUrl="login")
@@ -17,6 +19,7 @@ def crud_signin(user_data: UserSignin, db: Session):
 
     if not verify_password(user_data.password, user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
+
 
     token = create_access_token(data={"sub": str(user.id)})
     return {

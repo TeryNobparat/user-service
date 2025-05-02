@@ -61,3 +61,11 @@ def crud_edit_user(user_id: UUID, user_update: UserUpdate, db: Session) -> User:
     db.commit()
     db.refresh(user)
     return user
+
+def crud_get_roles(user_id : UUID, db:Session) -> User:
+    user_roles = db.query(UserRole).filter(UserRole.user_id == user_id).all()
+    role_ids = [ur.role.id for ur in user_roles]
+    roles = db.query(Role).filter(Role.id.in_(role_ids)).all()
+    role_names = [role.name for role in roles]
+
+    return {"role:": role_names}
