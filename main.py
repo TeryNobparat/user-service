@@ -5,10 +5,13 @@ from app.api.routers.router import api_router
 from app.core.config import settings
 from app.models import *
 from app.core.database import Base, engine
+from app.core.logger import AppLogger
 
+log = AppLogger(settings.APP_NAME).get_logger()
 Base.metadata.create_all(bind=engine)
 
 def get_app() -> FastAPI:
+    log.info("Starting process....")
     application = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION, debug=settings.DEBUG)
 
     if settings.BACKEND_CORS_ORIGINS:

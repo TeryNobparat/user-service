@@ -5,11 +5,17 @@ from uuid import UUID
 from app.schemas.schema_user import UserCreate, UserChangePassword, UserUpdate
 from app.core.security import hash_password, verify_password
 from app.models.user import User
+from app.core.logger import AppLogger
+
+log = AppLogger(name="crud_user").get_logger()
 
 
 def crud_user_registor(user_create: UserCreate, db: Session) -> User:
+    log.info(f"user_detail : {user_create}")
     existing_user = db.query(User).filter(User.username == user_create.username).first()
+    log.info(f"existing_user : {existing_user}")
     if existing_user:
+        log.error("Username already registered !!")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already registered !!")
 
     hashed_password = hash_password(user_create.password)
@@ -62,10 +68,3 @@ def crud_edit_user(user_id: UUID, user_update: UserUpdate, db: Session) -> User:
     db.refresh(user)
     return user
 
-def crud_get_roles(user_id : UUID, db:Session) -> User:
-    user_roles = db.query(UserRole).filter(UserRole.user_id == user_id).all()
-    role_ids = [ur.role.id for ur in user_roles]
-    roles = db.query(Role).filter(Role.id.in_(role_ids)).all()
-    role_names = [role.name for role in roles]
-
-    return {"role:": role_names}

@@ -1,0 +1,2 @@
+2025-05-08 16:05:46,870 - permission - INFO - crud_permission.py:crud_create_permission - Starting create permission : name='EDIT'
+2025-05-08 16:06:14,823 - permission - INFO - crud_permission.py:crud_create_permission - Starting create permission : name='DELETE'

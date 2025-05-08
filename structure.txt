@@ -1,0 +1,20 @@
+
+service-ai-assistand/
+├── main.py
+├── app/
+│   ├── api/
+│   │   ├── routers/
+│   │   │   ├── router.py
+│   │   │   └── ...
+│   ├── core/
+│   │   ├── config.py
+│   │   └── database.py
+│   ├── crud/
+│   ├── db/
+│   ├── models/
+│   ├── schemas/
+│   ├── main.py
+│   └── dependencies.py
+├── .env
+├── README.md
+└── requirements.txt

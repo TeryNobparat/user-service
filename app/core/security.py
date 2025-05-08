@@ -71,7 +71,8 @@ def get_current_user(token: str = Depends(oauth2_schema), db: Session = Depends(
 
 def require_any_permission(*perms):
     def cheker(user: User = Depends(get_current_user)):
-        if not any(p in user.permission for p in perms):
+        print(user)
+        if not any(p in user.get("permissions", []) for p in perms):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Permission denied !!"

@@ -16,3 +16,4 @@ def api_create_role(role_data:RoleCreate,db: Session = Depends(get_db), current_
 @router.post("/assignment" , response_model=RoleUserRead)
 def api_assignment_role(data:RoleUserCreate, db: Session = Depends(get_db), current_user: User = Depends(require_any_permission("MANAGE_PERMISSIONS"))):
     return crud_add_roles(data,db)
+

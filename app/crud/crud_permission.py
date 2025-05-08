@@ -7,12 +7,15 @@ from app.models.role import Role
 from app.models.role_permission import RolePermission
 
 from app.schemas.schema_permission import PermissionCreate,PermissionRead,RoleRolePermissionCreate,RoleRolePermissionRead
+from app.core.logger import AppLogger
 
+log = AppLogger('permission').get_logger()
 
 def crud_create_permission(permission_data:PermissionCreate, db: Session = Depends(get_db)):
     permis = db.query(Permission).filter(Permission.name == permission_data.name).first()
-
+    log.info(f"Starting create permission : {permission_data}")
     if permis:
+        log.error(f"permission '{permission_data}' : already")
         raise HTTPException(status_code= status.HTTP_400_BAD_REQUEST, detail="permission already !!")
     
     new_permission = Permission(**permission_data.dict())
@@ -41,5 +44,5 @@ def crud_add_permission(data:RoleRolePermissionCreate, db: Session = Depends(get
     db.add(new_assignment)
     db.commit()
     db.refresh(new_assignment)
-
+    log.info(f"Create permission : '{new_assignment}' successful.")
     return RoleRolePermissionRead.from_orm(new_assignment)
